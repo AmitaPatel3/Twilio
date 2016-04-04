@@ -3,10 +3,20 @@
 var express = require('express');
 var app = new express.Router();
 
-app.get('/sms', function getCb(req, res) {
-  console.log('REQUEST to/sms');
+app.post('/sms', function getCb(req, res) {
+  
+  console.log(req.body);
 
-  res.send({ ok: true });
+  var twiml = [
+    '<?xml version="1.0" encoding="UTF-8" ?>',
+    '<Response>',
+    '  <Message>You said: ' + req.body.Body + '</Message>',
+    '</Response>'
+  ].join('');
+
+  res.set('Content-Type', 'text/xml');
+  res.send(twiml);
+
 });
 
 module.exports = app;
